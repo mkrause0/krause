@@ -20,7 +20,7 @@ public class JServer {
         Server server = new Server(9090);
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
-        context.setContextPath("/");
+//        context.setContextPath("/");
         server.setHandler(context);
 
         ServletHolder jerseyServlet = context.addServlet(org.glassfish.jersey.servlet.ServletContainer.class, "/*");
