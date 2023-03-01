@@ -4,11 +4,20 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class JServer {
 
+	private static final Logger LOGGER = LogManager.getLogger(JServer.class);
+	
     public static void main(String[] args) throws Exception {
-        Server server = new Server(8080);
+    	System.out.println("AAAAAAAAAAAAAAAAAAA");
+        System.setProperty("log4j.configurationFile", "log4j2.xml");
+
+        LOGGER.debug("Starting server...");
+    	
+        Server server = new Server(9090);
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
         context.setContextPath("/");
