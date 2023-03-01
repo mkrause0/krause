@@ -13,8 +13,8 @@ public class GameOfLifeResource {
     private Thread gameThread;
     private boolean isRunning;
     
-    public static final int UPDATE_GRID_TIME_IN_MILLIS = 100;
-    public static final int PAGE_RELOAD_TIME_IN_MILLIS = 100;
+    public static final int GRID_UPDATE_TIME_IN_MILLIS = 100;
+    public static final int GRID_RELOAD_TIME_IN_MILLIS = 100;
 
     public GameOfLifeResource() {
         game = new GameOfLife();
@@ -28,41 +28,59 @@ public class GameOfLifeResource {
 
         sb.append("<html>"
         		+ "<head>"
-//        		+ "<meta http-equiv=\"refresh\" content=\"0."+(TIME_IN_MILLIS/100)+"\">"
         		+ "<script src=\"https://code.jquery.com/jquery-3.5.1.min.js\"></script>"
         		+ "<script>"
-        		+ "	$(document).ready(function() {"
-        		+ "		setInterval(function() {"
-        		+ "			window.location.reload();"
-        		+ "		}, "+PAGE_RELOAD_TIME_IN_MILLIS+");"
-        		+ "	});"
         		+ "	function start() {"
         		+ "		$.get(\"/gameoflife/start\");"
         		+ "	}"
         		+ "	function stop() {"
         		+ "		$.get(\"/gameoflife/stop\");"
         		+ "	}"
+        		+ "	$(document).ready(function() {"
+        		+ "		setInterval(function() {"
+        		+ "         $.ajax( {"
+        		+ "              url: \"grid\","
+        		+ "              success: function(result) {"
+        		+ "                $(\"#grid\").html(result);"
+        		+ "              }"
+        		+ "         });"
+        		+ "		}, " + GRID_RELOAD_TIME_IN_MILLIS + ")});"
         		+ "</script>"
 				+ "</head>"
-        		+ "<body><table>");
-
-        for (int i = 0; i < GameOfLife.ROWS; i++) {
-            sb.append("<tr>");
-            for (int j = 0; j < GameOfLife.COLUMNS; j++) {
-                sb.append("<td style=\"width:10px;height:10px;background-color:");
-                sb.append(game.getCell(i, j) ? "black" : "orange");
-                sb.append("\"></td>");
-            }
-            sb.append("</tr>");
-        }
-
-        sb.append("<button onclick=\"start()\">Start</button>"
-        		+ "<button onclick=\"stop()\">Stop</button>"
-        		+ "</body></html>");
+        		+ "<body>"
+                + "<button onclick=\"start()\">Start</button>"
+                + "<button onclick=\"stop()\">Stop</button>"
+                + "</br>"
+				+ "<div id=\"grid\"></div>"
+        		+ "</body>"
+        		+ "</html>");
 
         return sb.toString();
     }
 
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    @Path("/grid")    
+    public String grid() {
+    	StringBuilder sb = new StringBuilder();
+        sb.append("<table>");
+    	
+        for (int i = 0; i < GameOfLife.ROWS; i++) {
+	        sb.append("<tr>");
+	        for (int j = 0; j < GameOfLife.COLUMNS; j++) {
+	            sb.append("<td style=\"width:10px;height:10px;background-color:");
+	            sb.append(game.getCell(i, j) ? "black" : "orange");
+	            sb.append("\"></td>");
+	        }
+	        sb.append("</tr>");
+	    }
+
+        sb.append("</table>");
+        
+        return sb.toString();
+
+    }
+    
     @GET
     @Path("/start")
     public void start() {
@@ -96,7 +114,7 @@ public class GameOfLifeResource {
         gameThread = new Thread(() -> {
             while (isRunning) {
                 try {
-                    Thread.sleep(UPDATE_GRID_TIME_IN_MILLIS);
+                    Thread.sleep(GRID_UPDATE_TIME_IN_MILLIS);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
