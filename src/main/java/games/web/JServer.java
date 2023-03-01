@@ -12,10 +12,10 @@ public class JServer {
 	private static final Logger LOGGER = LogManager.getLogger(JServer.class);
 	
     public static void main(String[] args) throws Exception {
-    	System.out.println("AAAAAAAAAAAAAAAAAAA");
         System.setProperty("log4j.configurationFile", "log4j2.xml");
 
         LOGGER.debug("Starting server...");
+        //TODO active log4j
     	
         Server server = new Server(9090);
 
@@ -39,5 +39,3 @@ public class JServer {
         }
     }
 }
-
-

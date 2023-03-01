@@ -1,45 +1,80 @@
 package games.web.gameoflife;
 
+import javax.inject.Singleton;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-@Path("gameoflife")
-public class GameOfLifeResource {
+import javax.ws.rs.POST;
 
-	int[][] board;
-	boolean active = false;
-	
+@Singleton
+@Path("/gameoflife")
+public class GameOfLifeResource {
+    private GameOfLife game;
+    private Thread gameThread;
+    private boolean isRunning;
+    
+    public static final int TIME_IN_MILLIS = 100;
+
+    public GameOfLifeResource() {
+        game = new GameOfLife();
+        isRunning = false;
+        resetGameOfLife();
+    }
+
     @GET
     @Produces(MediaType.TEXT_HTML)
     public String getGameOfLife() {
-    	
-    	if(!active)
-    		board = GameOfLife.generateBoard(10, 10);
-    	else
-    	{
-    		board = GameOfLife.getNextGeneration(board);
-    	}
-    	
-        StringBuilder html = new StringBuilder();
-        html.append("<html>"
-        		+ "<head><meta http-equiv=\"refresh\" content=\"1\"></head>"
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("<html>"
+        		+ "<head><meta http-equiv=\"refresh\" content=\"0."+(TIME_IN_MILLIS/100)+"\"></head>"
         		+ "<body><table>");
-        for (int i = 0; i < board.length; i++) {
-            html.append("<tr>");
-            for (int j = 0; j < board[i].length; j++) {
-                html.append("<td>");
-                if (board[i][j] == 1) {
-                    html.append("*");
-                } else {
-                    html.append(".");
-                }
-                html.append("</td>");
+
+        for (int i = 0; i < GameOfLife.ROWS; i++) {
+            sb.append("<tr>");
+            for (int j = 0; j < GameOfLife.COLUMNS; j++) {
+                sb.append("<td style=\"width:10px;height:10px;background-color:");
+                sb.append(game.getCell(i, j) ? "black" : "orange");
+                sb.append("\"></td>");
             }
-            html.append("</tr>");
+            sb.append("</tr>");
         }
-        html.append("</table></body></html>");
-        return html.toString();
+
+        sb.append("</table><form method=\"POST\" action=\"/reset\"><input type=\"submit\" value=\"Reset\"></form></body></html>");
+
+        return sb.toString();
+    }
+
+    @GET
+    @Path("/reset")
+    public void resetGameOfLife() {
+        if (gameThread != null) {
+            isRunning = false;
+            try {
+                gameThread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        game.randomizeGrid();
+        startGameOfLife();
+    }
+
+    private void startGameOfLife() {
+        isRunning = true;
+        gameThread = new Thread(() -> {
+            while (isRunning) {
+                try {
+                    Thread.sleep(TIME_IN_MILLIS);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                game.updateGrid();
+            }
+        });
+        gameThread.start();
     }
 }
