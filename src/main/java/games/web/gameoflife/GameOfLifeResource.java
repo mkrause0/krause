@@ -84,7 +84,8 @@ public class GameOfLifeResource {
     @GET
     @Path("/start")
     public void start() {
-    	resetGameOfLife(true);
+    	if(!isRunning)
+    		resetGameOfLife(true);
     }
     
     @GET
