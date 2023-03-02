@@ -84,14 +84,12 @@ public class GameOfLifeResource {
     @GET
     @Path("/start")
     public void start() {
-    	System.out.println("start");
     	resetGameOfLife(true);
     }
     
     @GET
     @Path("/stop")
     public void stop() {
-    	System.out.println("stop");
     	 isRunning = false;
     }
     

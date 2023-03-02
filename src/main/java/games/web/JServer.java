@@ -12,10 +12,9 @@ public class JServer {
 	private static final Logger LOGGER = LogManager.getLogger(JServer.class);
 	
     public static void main(String[] args) throws Exception {
-        System.setProperty("log4j.configurationFile", "log4j2.xml");
+        System.setProperty("log4j.configurationFile", "src/main/resources/log4j2.xml");
 
-        LOGGER.debug("Starting server...");
-        //TODO active log4j
+        LOGGER.debug("Starting server..."); //TODO check why logging is not working
     	
         Server server = new Server(9090);
 

@@ -5,7 +5,7 @@ import java.util.Random;
 public class GameOfLife {
     private boolean[][] grid;
     public static final int ROWS = 70;
-    public static final int COLUMNS = 70;
+    public static final int COLUMNS = 120;
 
     public int getRows() {
 		return ROWS;
