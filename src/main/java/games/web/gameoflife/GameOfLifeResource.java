@@ -39,7 +39,7 @@ public class GameOfLifeResource {
         		+ "	$(document).ready(function() {"
         		+ "		setInterval(function() {"
         		+ "         $.ajax( {"
-        		+ "              url: \"gameoflife/grid\","
+        		+ "              url: \"grid\","
         		+ "              success: function(result) {"
         		+ "                $(\"#grid\").html(result);"
         		+ "              }"
