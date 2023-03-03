@@ -16,7 +16,7 @@ public class JServer {
 
         LOGGER.debug("Starting server..."); //TODO check why logging is not working
     	
-        Server server = new Server(9090);
+        Server server = new Server(8080);
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
 //        context.setContextPath("/");
