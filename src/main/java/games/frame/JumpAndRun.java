@@ -1,4 +1,4 @@
-package games.console;
+package games.frame;
 
 import java.awt.Color;
 import java.awt.Dimension;
