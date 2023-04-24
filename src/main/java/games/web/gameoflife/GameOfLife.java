@@ -99,61 +99,83 @@ public class GameOfLife {
     public void gosperGliderGun()
     {
     	boolean[][] newGrid = new boolean[ROWS][COLUMNS];
-    	
-    	// Initialisiere das Grid mit Nullen
-    	for (int i = 0; i < grid.length; i++) {
-    	    for (int j = 0; j < grid[i].length; j++) {
-    	        newGrid[i][j] = false;
-    	    }
-    	}
-
-    	// Setze die Zellen für die Gosper-Glider-Kanone
     	gosperGliderGunGrid(newGrid, 9, 0);
-    	
     	mirrorXAxis(newGrid);
     	mirrorYAxis(newGrid);
-    	
     	grid = newGrid;
     }
 
+	private void gosperGliderGunGrid(boolean[][] grid, int x, int y) {
+		grid[y+5][x+1]  = true;
+    	grid[y+5][x+2]  = true;
+    	grid[y+6][x+1]  = true;
+    	grid[y+6][x+2]  = true;
+    	grid[y+3][x+13] = true;
+    	grid[y+3][x+14] = true;
+    	grid[y+4][x+12] = true;
+    	grid[y+4][x+16] = true;
+    	grid[y+5][x+11] = true;
+    	grid[y+5][x+17] = true;
+    	grid[y+6][x+11] = true;
+    	grid[y+6][x+15] = true;
+    	grid[y+6][x+17] = true;
+    	grid[y+6][x+18] = true;
+    	grid[y+7][x+11] = true;
+    	grid[y+7][x+17] = true;
+    	grid[y+8][x+12] = true;
+    	grid[y+8][x+16] = true;
+    	grid[y+9][x+13] = true;
+    	grid[y+9][x+14] = true;
+    	grid[y+1][x+25] = true;
+    	grid[y+2][x+23] = true;
+    	grid[y+2][x+25] = true;
+    	grid[y+3][x+21] = true;
+    	grid[y+3][x+22] = true;
+    	grid[y+4][x+21] = true;
+    	grid[y+4][x+22] = true;
+    	grid[y+5][x+21] = true;
+    	grid[y+5][x+22] = true;
+    	grid[y+6][x+23] = true;
+    	grid[y+6][x+25] = true;
+    	grid[y+7][x+25] = true;
+    	grid[y+3][x+35] = true;
+    	grid[y+3][x+36] = true;
+    	grid[y+4][x+35] = true;
+    	grid[y+4][x+36] = true;
+	}
 
-
-	private void gosperGliderGunGrid(boolean[][] grid, int x1, int y1) {
-		grid[y1+5][x1+1]  = true;
-    	grid[y1+5][x1+2]  = true;
-    	grid[y1+6][x1+1]  = true;
-    	grid[y1+6][x1+2]  = true;
-    	grid[y1+3][x1+13] = true;
-    	grid[y1+3][x1+14] = true;
-    	grid[y1+4][x1+12] = true;
-    	grid[y1+4][x1+16] = true;
-    	grid[y1+5][x1+11] = true;
-    	grid[y1+5][x1+17] = true;
-    	grid[y1+6][x1+11] = true;
-    	grid[y1+6][x1+15] = true;
-    	grid[y1+6][x1+17] = true;
-    	grid[y1+6][x1+18] = true;
-    	grid[y1+7][x1+11] = true;
-    	grid[y1+7][x1+17] = true;
-    	grid[y1+8][x1+12] = true;
-    	grid[y1+8][x1+16] = true;
-    	grid[y1+9][x1+13] = true;
-    	grid[y1+9][x1+14] = true;
-    	grid[y1+1][x1+25] = true;
-    	grid[y1+2][x1+23] = true;
-    	grid[y1+2][x1+25] = true;
-    	grid[y1+3][x1+21] = true;
-    	grid[y1+3][x1+22] = true;
-    	grid[y1+4][x1+21] = true;
-    	grid[y1+4][x1+22] = true;
-    	grid[y1+5][x1+21] = true;
-    	grid[y1+5][x1+22] = true;
-    	grid[y1+6][x1+23] = true;
-    	grid[y1+6][x1+25] = true;
-    	grid[y1+7][x1+25] = true;
-    	grid[y1+3][x1+35] = true;
-    	grid[y1+3][x1+36] = true;
-    	grid[y1+4][x1+35] = true;
-    	grid[y1+4][x1+36] = true;
+	public void smiley() {
+    	boolean[][] newGrid = new boolean[ROWS][COLUMNS];
+    	
+    	for (int x = 0; x < 14*8; x+=8) {
+    		for (int y = 0; y < 8*9; y+=9) {
+    			smileyGrid(newGrid, x+4, y+2);
+			}
+		}
+    	grid = newGrid;
+	}
+	
+	private void smileyGrid(boolean[][] grid, int x, int y) {
+		// smiley
+		grid[y][x] = true;
+		grid[y][x+1] = true;
+		grid[y][x+3] = true;
+		grid[y][x+5] = true;
+		grid[y][x+6] = true;
+		grid[y+1][x+3] = true;
+		grid[y+2][x+0] = true;
+		grid[y+2][x+6] = true;
+		grid[y+3][x+1] = true;
+		grid[y+3][x+2] = true;
+		grid[y+3][x+3] = true;
+		grid[y+3][x+4] = true;
+		grid[y+3][x+5] = true;
+		// stabilizing cells
+		grid[y+6][x+0] = true;
+		grid[y+6][x+1] = true;
+		grid[y+6][x+2] = true;
+		grid[y+6][x+4] = true;
+		grid[y+6][x+5] = true;
+		grid[y+6][x+6] = true;
 	}
 }

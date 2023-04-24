@@ -13,8 +13,12 @@ public class GameOfLifeResource {
     private Thread gameThread;
     private boolean isRunning;
     
-    public static final int GRID_UPDATE_TIME_IN_MILLIS = 100;
-    public static final int GRID_RELOAD_TIME_IN_MILLIS = 100;
+    private static final int GRID_RELOAD_TIME_IN_MILLIS = 200;
+    private static final int MIN_UPDATE_TIME_IN_MILLIS = 0;
+    private static final int INITIAL_UPDATE_TIME_IN_MILLIS = 200;
+    
+    private int updateTimeInMillis = INITIAL_UPDATE_TIME_IN_MILLIS;
+    private int timeInMillisChangeFactor = 50;
 
     public GameOfLifeResource() {
         game = new GameOfLife();
@@ -36,8 +40,23 @@ public class GameOfLifeResource {
         		+ "	function startgosperglidergun() {"
         		+ "		$.get(\"/gameoflife/startgosperglidergun\");"
         		+ "	}"
+        		+ "	function startsmiley() {"
+        		+ "		$.get(\"/gameoflife/startsmiley\");"
+        		+ "	}"
         		+ "	function stop() {"
         		+ "		$.get(\"/gameoflife/stop\");"
+        		+ "	}"
+        		+ "	function faster() {"
+        		+ "		$.get(\"/gameoflife/faster\");"
+        		+"      location.reload();"	
+        		+ "	}"
+        		+ "	function slower() {"
+        		+ "		$.get(\"/gameoflife/slower\");"
+        		+"      location.reload();"	
+        		+ "	}"
+        		+ "	function resettime() {"
+        		+ "		$.get(\"/gameoflife/resettime\");"
+        		+"      location.reload();"	
         		+ "	}"
         		+ "	$(document).ready(function() {"
         		+ "		setInterval(function() {"
@@ -51,10 +70,14 @@ public class GameOfLifeResource {
         		+ "</script>"
 				+ "</head>"
         		+ "<body>"
-                + "<button onclick=\"start()\">Start</button>&nbsp;"
+                + "<button onclick=\"start()\">Start Zufall</button>&nbsp;"
                 + "<button onclick=\"startgosperglidergun()\">Start Gosper Glider Gun</button>&nbsp;"
-                + "<button onclick=\"stop()\">Stop</button>"
-                + "</br>"
+                + "<button onclick=\"startsmiley()\">Start Smiley</button>&nbsp;"
+                + "<button onclick=\"stop()\">Stop</button>&nbsp;&nbsp;"
+                + "<button onclick=\"faster()\">Schneller</button>&nbsp;"
+                + "<button onclick=\"slower()\">Langsamer</button>&nbsp;"
+                + "<button onclick=\"resettime()\">Ursprungszyklenzeit</button>&nbsp;"
+                + "Zyklenzeit in ms: " + updateTimeInMillis
 				+ "<div id=\"grid\"></div>"
         		+ "</body>"
         		+ "</html>");
@@ -108,9 +131,41 @@ public class GameOfLifeResource {
     }
     
     @GET
+    @Path("/startsmiley")
+    public void startsmiley() {
+    	if(!isRunning)
+    	{
+    		resetGameOfLife();
+            game.smiley();
+            startGameOfLife();
+    	}
+    }
+    
+    @GET
     @Path("/stop")
     public void stop() {
     	 isRunning = false;
+    }
+    
+    @GET
+    @Path("/faster")
+    public void faster() {
+    	updateTimeInMillis -= timeInMillisChangeFactor;
+    	if (updateTimeInMillis <= MIN_UPDATE_TIME_IN_MILLIS) {
+			updateTimeInMillis = MIN_UPDATE_TIME_IN_MILLIS;
+		}
+    }
+    
+    @GET
+    @Path("/slower")
+    public void slower() {
+    	updateTimeInMillis += timeInMillisChangeFactor;
+    }
+    
+    @GET
+    @Path("/resettime")
+    public void resettime() {
+    	updateTimeInMillis = INITIAL_UPDATE_TIME_IN_MILLIS;
     }
     
     private void resetGameOfLife() {
@@ -129,7 +184,7 @@ public class GameOfLifeResource {
         gameThread = new Thread(() -> {
             while (isRunning) {
                 try {
-                    Thread.sleep(GRID_UPDATE_TIME_IN_MILLIS);
+                    Thread.sleep(updateTimeInMillis);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
