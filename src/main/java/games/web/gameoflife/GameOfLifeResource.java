@@ -33,6 +33,9 @@ public class GameOfLifeResource {
         		+ "	function start() {"
         		+ "		$.get(\"/gameoflife/start\");"
         		+ "	}"
+        		+ "	function startgosperglidergun() {"
+        		+ "		$.get(\"/gameoflife/startgosperglidergun\");"
+        		+ "	}"
         		+ "	function stop() {"
         		+ "		$.get(\"/gameoflife/stop\");"
         		+ "	}"
@@ -48,7 +51,8 @@ public class GameOfLifeResource {
         		+ "</script>"
 				+ "</head>"
         		+ "<body>"
-                + "<button onclick=\"start()\">Start</button>"
+                + "<button onclick=\"start()\">Start</button>&nbsp;"
+                + "<button onclick=\"startgosperglidergun()\">Start Gosper Glider Gun</button>&nbsp;"
                 + "<button onclick=\"stop()\">Stop</button>"
                 + "</br>"
 				+ "<div id=\"grid\"></div>"
@@ -85,7 +89,22 @@ public class GameOfLifeResource {
     @Path("/start")
     public void start() {
     	if(!isRunning)
-    		resetGameOfLife(true);
+    	{
+    		resetGameOfLife();
+            game.randomizeGrid();
+            startGameOfLife();
+    	}
+    }
+    
+    @GET
+    @Path("/startgosperglidergun")
+    public void startgosperglidergun() {
+    	if(!isRunning)
+    	{
+    		resetGameOfLife();
+            game.gosperGliderGun();
+            startGameOfLife();
+    	}
     }
     
     @GET
@@ -94,7 +113,7 @@ public class GameOfLifeResource {
     	 isRunning = false;
     }
     
-    private void resetGameOfLife(boolean delay) {
+    private void resetGameOfLife() {
         if (gameThread != null) {
             isRunning = false;
             try {
@@ -103,9 +122,6 @@ public class GameOfLifeResource {
                 e.printStackTrace();
             }
         }
-
-        game.randomizeGrid();
-        startGameOfLife();
     }
 
     private void startGameOfLife() {
