@@ -3,6 +3,7 @@ package games.web.gameoflife;
 import javax.inject.Singleton;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -15,10 +16,11 @@ public class GameOfLifeResource {
     
     private static final int GRID_RELOAD_TIME_IN_MILLIS = 200;
     private static final int MIN_UPDATE_TIME_IN_MILLIS = 0;
+    private static final int MAX_UPDATE_TIME_IN_MILLIS = 5000;
+    private static final int TIME_IN_MILLIS_CHANGE_FACTOR = 50;
     private static final int INITIAL_UPDATE_TIME_IN_MILLIS = 200;
-    
     private int updateTimeInMillis = INITIAL_UPDATE_TIME_IN_MILLIS;
-    private int timeInMillisChangeFactor = 50;
+    
 
     public GameOfLifeResource() {
         game = new GameOfLife();
@@ -46,16 +48,10 @@ public class GameOfLifeResource {
         		+ "	function stop() {"
         		+ "		$.get(\"/gameoflife/stop\");"
         		+ "	}"
-        		+ "	function faster() {"
-        		+ "		$.get(\"/gameoflife/faster\");"
-        		+"      location.reload();"	
-        		+ "	}"
-        		+ "	function slower() {"
-        		+ "		$.get(\"/gameoflife/slower\");"
-        		+"      location.reload();"	
-        		+ "	}"
-        		+ "	function resettime() {"
-        		+ "		$.get(\"/gameoflife/resettime\");"
+        		+ "	function slidercycle() {"
+        		+ "		var sliderValue = $(this).val();"
+        		+ "		console.log(sliderValue);"
+        		+ "		$.get(\"/gameoflife/cycletime/\"+sliderValue);"
         		+"      location.reload();"	
         		+ "	}"
         		+ "	$(document).ready(function() {"
@@ -66,7 +62,13 @@ public class GameOfLifeResource {
         		+ "                $(\"#grid\").html(result);"
         		+ "              }"
         		+ "         });"
-        		+ "		}, " + GRID_RELOAD_TIME_IN_MILLIS + ")});"
+        		+ "		}, " + GRID_RELOAD_TIME_IN_MILLIS + ");"
+        		+ "     $(\"#slidercycle\").on(\"change\", function() {"
+        		+ "			var sliderValue = $(this).val();"
+        		+ "			$.get(\"/gameoflife/cycletime/\"+sliderValue);"
+        		+"      	location.reload();"	
+        		+ "     });"
+        		+ "})"
         		+ "</script>"
 				+ "</head>"
         		+ "<body>"
@@ -74,9 +76,7 @@ public class GameOfLifeResource {
                 + "<button onclick=\"startgosperglidergun()\">Start Gosper Glider Gun</button>&nbsp;"
                 + "<button onclick=\"startsmiley()\">Start Smiley</button>&nbsp;"
                 + "<button onclick=\"stop()\">Stop</button>&nbsp;&nbsp;"
-                + "<button onclick=\"faster()\">Schneller</button>&nbsp;"
-                + "<button onclick=\"slower()\">Langsamer</button>&nbsp;"
-                + "<button onclick=\"resettime()\">Ursprungszyklenzeit</button>&nbsp;"
+                + "<input id=\"slidercycle\" type=\"range\" min=\""+MIN_UPDATE_TIME_IN_MILLIS+"\" max=\""+MAX_UPDATE_TIME_IN_MILLIS+"\" step=\""+TIME_IN_MILLIS_CHANGE_FACTOR+"\" value=\""+updateTimeInMillis+"\">"
                 + "Zyklenzeit in ms: " + updateTimeInMillis
 				+ "<div id=\"grid\"></div>"
         		+ "</body>"
@@ -148,24 +148,17 @@ public class GameOfLifeResource {
     }
     
     @GET
-    @Path("/faster")
-    public void faster() {
-    	updateTimeInMillis -= timeInMillisChangeFactor;
-    	if (updateTimeInMillis <= MIN_UPDATE_TIME_IN_MILLIS) {
+    @Path("/cycletime/{cycletime}")
+    public void cycletime(@PathParam("cycletime") String cycletime) {
+    	updateTimeInMillis = Integer.valueOf(cycletime);
+    	
+    	if (updateTimeInMillis < MIN_UPDATE_TIME_IN_MILLIS) {
 			updateTimeInMillis = MIN_UPDATE_TIME_IN_MILLIS;
 		}
-    }
-    
-    @GET
-    @Path("/slower")
-    public void slower() {
-    	updateTimeInMillis += timeInMillisChangeFactor;
-    }
-    
-    @GET
-    @Path("/resettime")
-    public void resettime() {
-    	updateTimeInMillis = INITIAL_UPDATE_TIME_IN_MILLIS;
+    	
+    	if (updateTimeInMillis > MAX_UPDATE_TIME_IN_MILLIS) {
+			updateTimeInMillis = MAX_UPDATE_TIME_IN_MILLIS;
+		}
     }
     
     private void resetGameOfLife() {
