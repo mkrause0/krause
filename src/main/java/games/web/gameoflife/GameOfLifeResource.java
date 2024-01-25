@@ -57,7 +57,7 @@ public class GameOfLifeResource {
         		+ "	$(document).ready(function() {"
         		+ "		setInterval(function() {"
         		+ "         $.ajax( {"
-        		+ "              url: \"grid\","
+        		+ "              url: \"gameoflife/grid\","
         		+ "              success: function(result) {"
         		+ "                $(\"#grid\").html(result);"
         		+ "              }"
