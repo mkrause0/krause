@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 public class VehicleNumberGeneratorTest {
 
-	// TODO Code comments
+	// TODO Code comments and check randfälle
 	VehicleNumberGenerator gen = new VehicleNumberGenerator();
 	
 	@Test

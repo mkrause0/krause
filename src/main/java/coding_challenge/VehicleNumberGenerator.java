@@ -3,7 +3,7 @@ package coding_challenge;
 import java.util.ArrayList;
 import java.util.Random;
 
-// TODO Code comments and at reference to task
+// TODO Code comments and at reference to task and check ungültige eingaben
 
 public class VehicleNumberGenerator {
 	public Integer generateVehicleNumber()
