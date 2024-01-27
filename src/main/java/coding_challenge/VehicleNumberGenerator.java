@@ -42,19 +42,13 @@ public class VehicleNumberGenerator {
         return ((n / 10) + 1) * 10;
     }
     
-    public static int berechneEndquersumme(int n) {
+    
+    public static int berechneEndquersumme(int zahl) {
         int summe = 0;
-
-        // Solange n mehr als eine Ziffer hat
-        while (n > 0 || summe > 9) {
-            if (n == 0) {
-                n = summe;
-                summe = 0;
-            }
-            summe += n % 10;
-            n /= 10;
+        while (zahl != 0) {
+            summe += zahl % 10;
+            zahl /= 10;
         }
-
         return summe;
     }
 }
