@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class VehicleNumberGenerator {
 	
-	public Long generateVehicleNumber()
+	public String generateVehicleNumber()
 	{
 		Random r = new Random();
 		ArrayList<Integer> numbers = new ArrayList<Integer>();
@@ -31,12 +31,11 @@ public class VehicleNumberGenerator {
 						numbers.get(8)+ "" +
 						numbers.get(9)+ "" +
 						numbers.get(10)+ "";
-		return appendCheckDigitToNumber(Long.valueOf(number));
+		return appendCheckDigitToNumber(number);
 	}
 	
-	public Long appendCheckDigitToNumber(Long numb)
+	public String appendCheckDigitToNumber(String number)
 	{
-		String number = String.valueOf(numb);
 		int total = berechneEndquersumme(Character.getNumericValue(number.charAt(0)) * 2) + 
 					berechneEndquersumme(Character.getNumericValue(number.charAt(1)) * 1) + 
 					berechneEndquersumme(Character.getNumericValue(number.charAt(2)) * 2) + 
@@ -49,7 +48,7 @@ public class VehicleNumberGenerator {
 					berechneEndquersumme(Character.getNumericValue(number.charAt(9)) * 1) +
 					berechneEndquersumme(Character.getNumericValue(number.charAt(10)) * 2);
 		int diffToNext10 = ermittleNaechstGroessereZehnerzahl(total)-total;
-		return Long.valueOf(number + "" + diffToNext10);
+		return number + "" + diffToNext10;
 	}
 	
     public static int ermittleNaechstGroessereZehnerzahl(int n) {
