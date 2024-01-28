@@ -5,7 +5,28 @@ import java.util.Random;
 
 public class VehicleNumberGenerator {
 	
-	public String generateVehicleNumber()
+	public String generateVehicleNumber7()
+	{
+		Random r = new Random();
+		ArrayList<Integer> numbers = new ArrayList<Integer>();
+		numbers.add(r.nextInt(10)); // Reihennummer (Elektrolokomotive = 1)
+		numbers.add(r.nextInt(10)); // Reihennummer
+		numbers.add(r.nextInt(10)); // Reihennummer
+		numbers.add(r.nextInt(10)); // Reihennummer
+		numbers.add(r.nextInt(10)); // Ordnungsnummer
+		numbers.add(r.nextInt(10)); // Ordnungsnummer
+		numbers.add(r.nextInt(10)); // Ordnungsnummer
+		String number = numbers.get(0)+ "" +
+						numbers.get(1)+ "" +
+						numbers.get(2)+ "" +
+						numbers.get(3)+ "" +
+						numbers.get(4)+ "" +
+						numbers.get(5)+ "" +
+						numbers.get(6)+ "";
+		return appendCheckDigitToNumber(number);
+	}
+	
+	public String generateVehicleNumber11()
 	{
 		Random r = new Random();
 		ArrayList<Integer> numbers = new ArrayList<Integer>();
@@ -33,20 +54,17 @@ public class VehicleNumberGenerator {
 						numbers.get(10)+ "";
 		return appendCheckDigitToNumber(number);
 	}
-	
+
+	/*
+	 * Jedes Zeichen wird abwechselnd mal 1 oder mal 2 genommen und eine Quersumme gebildet. Anschließend werden alle Quersummen addiert.
+	 */
 	public String appendCheckDigitToNumber(String number)
 	{
-		int total = berechneEndquersumme(Character.getNumericValue(number.charAt(0)) * 2) + 
-					berechneEndquersumme(Character.getNumericValue(number.charAt(1)) * 1) + 
-					berechneEndquersumme(Character.getNumericValue(number.charAt(2)) * 2) + 
-					berechneEndquersumme(Character.getNumericValue(number.charAt(3)) * 1) + 
-					berechneEndquersumme(Character.getNumericValue(number.charAt(4)) * 2) + 
-					berechneEndquersumme(Character.getNumericValue(number.charAt(5)) * 1) + 
-					berechneEndquersumme(Character.getNumericValue(number.charAt(6)) * 2) +
-					berechneEndquersumme(Character.getNumericValue(number.charAt(7)) * 1) +
-					berechneEndquersumme(Character.getNumericValue(number.charAt(8)) * 2) +
-					berechneEndquersumme(Character.getNumericValue(number.charAt(9)) * 1) +
-					berechneEndquersumme(Character.getNumericValue(number.charAt(10)) * 2);
+		int total = 0;
+		for (int i = 0; i < number.length(); i++) {
+			total += berechneEndquersumme(Character.getNumericValue(number.charAt(i)) * (i % 2 == 0 ? 2 : 1));
+			
+		}
 		int diffToNext10 = ermittleNaechstGroessereZehnerzahl(total)-total;
 		return number + "" + diffToNext10;
 	}
