@@ -9,7 +9,7 @@ public class VehicleNumberGenerator {
 	{
 		Random r = new Random();
 		ArrayList<Integer> numbers = new ArrayList<Integer>();
-		numbers.add(r.nextInt(10)); // Reihennummer (Elektrolokomotive = 1)
+		numbers.add(1); // Reihennummer (Elektrolokomotive = 1)
 		numbers.add(r.nextInt(10)); // Reihennummer
 		numbers.add(r.nextInt(10)); // Reihennummer
 		numbers.add(r.nextInt(10)); // Reihennummer
