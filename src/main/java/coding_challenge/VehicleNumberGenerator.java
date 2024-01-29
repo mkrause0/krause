@@ -71,6 +71,10 @@ public class VehicleNumberGenerator {
 		System.out.println("Total: " + total);
 		int nextNumberOfTen = getNextNumberOfTen(total);
 		int diffToNext10 = nextNumberOfTen-total;
+		if(diffToNext10 == 10)
+		{
+			//TODO was soll dann gemacht werden, die Prüfziffer auf 0 gesetz werden?
+		}
 		System.out.println("diffToNext10 ("+nextNumberOfTen+"-"+total+"): " + diffToNext10);
 		return number + "" + diffToNext10;
 	}
