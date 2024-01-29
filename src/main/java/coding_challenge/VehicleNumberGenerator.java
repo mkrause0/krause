@@ -63,9 +63,12 @@ public class VehicleNumberGenerator {
 		System.out.println("Number without check digit:" + number);
 		int total = 0;
 		for (int i = 0; i < number.length(); i++) {
-			total += getCrossSum(Character.getNumericValue(number.charAt(i)) * (i % 2 == 0 ? 2 : 1));
-			System.out.println(number.charAt(i) + "*" + (i % 2 == 0 ? 2 : 1) + "=" + Character.getNumericValue(number.charAt(i)) * (i % 2 == 0 ? 2 : 1) + "=" +
-							   getCrossSum(Character.getNumericValue(number.charAt(i)) * (i % 2 == 0 ? 2 : 1)));
+			int digit = Character.getNumericValue(number.charAt(i));
+			int multiply = (i % 2 == 0 ? 2 : 1);
+			int digitWithMultiply = digit * multiply;
+			int crossSum = getCrossSum(digitWithMultiply);
+			total += crossSum;
+			System.out.println(digit + "*" + multiply + "=" + digitWithMultiply + "=" + crossSum);
 			
 		}
 		System.out.println("Total: " + total);
