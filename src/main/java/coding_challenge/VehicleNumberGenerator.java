@@ -2,30 +2,37 @@ package coding_challenge;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.stream.Collectors;
 
+/**
+ */
 public class VehicleNumberGenerator {
 	
+	// TODO parameterize Reihennummer  
+	/**
+	 * generates an 7 digit long vehicle number with Reihennummer 1001 and an random Ordnungsnummer
+	 */
 	public String generateVehicleNumber7()
 	{
 		Random r = new Random();
 		ArrayList<Integer> numbers = new ArrayList<Integer>();
-		numbers.add(1); // Reihennummer (Elektrolokomotive = 1)
-		numbers.add(r.nextInt(10)); // Reihennummer
-		numbers.add(r.nextInt(10)); // Reihennummer
-		numbers.add(r.nextInt(10)); // Reihennummer
+		numbers.add(1); // Reihennummer (Elektrolokomotive = 1; 1001–1019: Schnellzuglokomotiven)
+		numbers.add(0); // Reihennummer 
+		numbers.add(0); // Reihennummer
+		numbers.add(1); // Reihennummer
 		numbers.add(r.nextInt(10)); // Ordnungsnummer
 		numbers.add(r.nextInt(10)); // Ordnungsnummer
 		numbers.add(r.nextInt(10)); // Ordnungsnummer
-		String number = numbers.get(0)+ "" +
-						numbers.get(1)+ "" +
-						numbers.get(2)+ "" +
-						numbers.get(3)+ "" +
-						numbers.get(4)+ "" +
-						numbers.get(5)+ "" +
-						numbers.get(6)+ "";
+		String number = numbers.stream()
+	               .map(Object::toString)
+	               .collect(Collectors.joining());
 		return appendCheckDigitToNumber(number);
 	}
-	
+
+	// TODO parameterize Bauartcode, Reihennummer and Ordnungsnummer
+	/**
+	 * generates an 11 digit long vehicle number with Bauartcode 91, Reihennummer 1001 and an random Ordnungsnummer
+	 */
 	public String generateVehicleNumber11()
 	{
 		Random r = new Random();
@@ -34,47 +41,54 @@ public class VehicleNumberGenerator {
 		numbers.add(1); // Bauartcode
 		numbers.add(8); // Ländercode
 		numbers.add(1); // Ländercode
-		numbers.add(1); // Reihennummer (Elektrolokomotive = 1)
-		numbers.add(2); // Reihennummer
+		numbers.add(1); // Reihennummer (Elektrolokomotive = 1; 1001–1019: Schnellzuglokomotiven)
+		numbers.add(0); // Reihennummer
+		numbers.add(0); // Reihennummer
 		numbers.add(1); // Reihennummer
-		numbers.add(6); // Reihennummer
 		numbers.add(r.nextInt(10)); // Ordnungsnummer
 		numbers.add(r.nextInt(10)); // Ordnungsnummer
 		numbers.add(r.nextInt(10)); // Ordnungsnummer
-		String number = numbers.get(0)+ "" +
-						numbers.get(1)+ "" +
-						numbers.get(2)+ "" +
-						numbers.get(3)+ "" +
-						numbers.get(4)+ "" +
-						numbers.get(5)+ "" +
-						numbers.get(6)+ "" +
-						numbers.get(7)+ "" +
-						numbers.get(8)+ "" +
-						numbers.get(9)+ "" +
-						numbers.get(10)+ "";
+		String number = numbers.stream()
+	               .map(Object::toString)
+	               .collect(Collectors.joining());
 		return appendCheckDigitToNumber(number);
 	}
 
-	/*
-	 * Jedes Zeichen wird abwechselnd mal 1 oder mal 2 genommen und eine Quersumme gebildet. Anschließend werden alle Quersummen addiert.
+	/**
+	 * Each character is multiply by 1 or 2 and a cross sum is formed. All the sums are then added together.
 	 */
 	public String appendCheckDigitToNumber(String number)
 	{
+		System.out.println("Number without check digit:" + number);
 		int total = 0;
 		for (int i = 0; i < number.length(); i++) {
-			total += berechneEndquersumme(Character.getNumericValue(number.charAt(i)) * (i % 2 == 0 ? 2 : 1));
+			total += getCrossSum(Character.getNumericValue(number.charAt(i)) * (i % 2 == 0 ? 2 : 1));
+			System.out.println(number.charAt(i) + "*" + (i % 2 == 0 ? 2 : 1) + "=" + Character.getNumericValue(number.charAt(i)) * (i % 2 == 0 ? 2 : 1) + "=" +
+							   getCrossSum(Character.getNumericValue(number.charAt(i)) * (i % 2 == 0 ? 2 : 1)));
 			
 		}
-		int diffToNext10 = ermittleNaechstGroessereZehnerzahl(total)-total;
+		System.out.println("Total: " + total);
+		int nextNumberOfTen = getNextNumberOfTen(total);
+		int diffToNext10 = nextNumberOfTen-total;
+		System.out.println("diffToNext10 ("+nextNumberOfTen+"): " + diffToNext10);
 		return number + "" + diffToNext10;
 	}
 	
-    public static int ermittleNaechstGroessereZehnerzahl(int n) {
+	/**
+	 * determines the next larger number of 10
+	 * TODO: Differenz zum nächsten Vielfachen von 10: (10−9) =  1
+	 * 		 Bei einer Zahl 20 wäre das nächste vielfache 30. Und das Ergebniss dann zweistellig: (30-20) = 10.
+	 *       Das Vorgehen wird aus dem Artikel in diesem Fall nicht ersichtbar.
+	 */
+    public static int getNextNumberOfTen(int n) {
         return ((n / 10) + 1) * 10;
     }
     
     
-    public static int berechneEndquersumme(int zahl) {
+    /**
+     * calculates the cross sum
+     */
+    public static int getCrossSum(int zahl) {
         int summe = 0;
         while (zahl != 0) {
             summe += zahl % 10;
