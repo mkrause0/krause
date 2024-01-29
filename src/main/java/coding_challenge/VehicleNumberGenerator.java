@@ -5,6 +5,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
+ * instead of system.out use an log4j logger
  */
 public class VehicleNumberGenerator {
 	
@@ -70,7 +71,7 @@ public class VehicleNumberGenerator {
 		System.out.println("Total: " + total);
 		int nextNumberOfTen = getNextNumberOfTen(total);
 		int diffToNext10 = nextNumberOfTen-total;
-		System.out.println("diffToNext10 ("+nextNumberOfTen+"): " + diffToNext10);
+		System.out.println("diffToNext10 ("+nextNumberOfTen+"-"+total+"): " + diffToNext10);
 		return number + "" + diffToNext10;
 	}
 	
