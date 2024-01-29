@@ -2,8 +2,13 @@ package coding_challenge;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class VehicleNumberGeneratorTest {
 
+	private static final Logger LOGGER = LogManager.getLogger(VehicleNumberGeneratorTest.class);
+	
 	VehicleNumberGenerator gen = new VehicleNumberGenerator();
 	
 	@Test
@@ -47,14 +52,14 @@ public class VehicleNumberGeneratorTest {
 	private void generateVehicleNumber7() {
 		String vehicleNumber = gen.generateVehicleNumber7();
 		String vehicleNumberWithoutCheckDigit = vehicleNumber.substring(0, vehicleNumber.length()-1);
-		System.out.println("Number with check digit: " + vehicleNumber);
+		LOGGER.debug("Number with check digit: " + vehicleNumber);
 		assertEquals(gen.appendCheckDigitToNumber(vehicleNumberWithoutCheckDigit), vehicleNumber);
 	}
 	
 	private void generateVehicleNumber11() {
 		String vehicleNumber = gen.generateVehicleNumber11();
 		String vehicleNumberWithoutCheckDigit = vehicleNumber.substring(0, vehicleNumber.length()-1);
-		System.out.println("Number with check digit: " + vehicleNumber);
+		LOGGER.debug("Number with check digit: " + vehicleNumber);
 		assertEquals(gen.appendCheckDigitToNumber(vehicleNumberWithoutCheckDigit), vehicleNumber);
 	}
 }

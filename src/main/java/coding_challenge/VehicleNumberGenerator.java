@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-/**
- * instead of system.out use an log4j logger
- */
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class VehicleNumberGenerator {
 	
+	private static final Logger LOGGER = LogManager.getLogger(VehicleNumberGenerator.class);
+
 	// TODO parameterize Reihennummer  
 	/**
 	 * generates an 7 digit long vehicle number with Reihennummer 1001 and an random Ordnungsnummer
@@ -60,7 +62,7 @@ public class VehicleNumberGenerator {
 	 */
 	public String appendCheckDigitToNumber(String number)
 	{
-		System.out.println("Number without check digit:" + number);
+		LOGGER.debug("Number without check digit:" + number);
 		int total = 0;
 		for (int i = 0; i < number.length(); i++) {
 			int digit = Character.getNumericValue(number.charAt(i));
@@ -68,13 +70,13 @@ public class VehicleNumberGenerator {
 			int digitWithMultiply = digit * multiply;
 			int crossSum = getCrossSum(digitWithMultiply);
 			total += crossSum;
-			System.out.println(digit + " * " + multiply + " = " + digitWithMultiply + " = " + crossSum + " (crosssum)");
+			LOGGER.debug(digit + " * " + multiply + " = " + digitWithMultiply + " = " + crossSum + " (crosssum)");
 			
 		}
-		System.out.println("Total: " + total);
+		LOGGER.debug("Total: " + total);
 		int nextNumberOfTen = getNextNumberOfTen(total);
 		int diffToNext10 = nextNumberOfTen-total;
-		System.out.println("diffToNext10 ("+nextNumberOfTen+"-"+total+"): " + diffToNext10);
+		LOGGER.debug("diffToNext10 ("+nextNumberOfTen+"-"+total+"): " + diffToNext10);
 		return number + "" + diffToNext10;
 	}
 	
