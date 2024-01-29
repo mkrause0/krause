@@ -1,15 +1,26 @@
 package coding_challenge;
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
+
+
+import common.AppConfig;
+
+import static org.junit.Assert.assertEquals;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+@RunWith(SpringRunner.class)
+@ContextConfiguration(classes = AppConfig.class)
 public class VehicleNumberGeneratorTest {
-
 	private static final Logger LOGGER = LogManager.getLogger(VehicleNumberGeneratorTest.class);
+
+	@Autowired
+	VehicleNumberGenerator gen;
 	
-	VehicleNumberGenerator gen = new VehicleNumberGenerator();
 	
 	@Test
     public void testNextNumberOfTen() {
