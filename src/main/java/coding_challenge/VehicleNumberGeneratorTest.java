@@ -31,6 +31,7 @@ public class VehicleNumberGeneratorTest {
 		assertEquals(gen.appendCheckDigitToNumber("1116064"), "11160645");
 		assertEquals(gen.appendCheckDigitToNumber("1142606"), "11426061");
 		assertEquals(gen.appendCheckDigitToNumber("91811216141"), "918112161412");
+		assertEquals(gen.appendCheckDigitToNumber("91811001250"), "9181100125010"); //TODO was wenn prüffziffer 2 stellig ist?
 	}
 	
 	@Test
