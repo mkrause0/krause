@@ -68,7 +68,7 @@ public class VehicleNumberGenerator {
 			int digitWithMultiply = digit * multiply;
 			int crossSum = getCrossSum(digitWithMultiply);
 			total += crossSum;
-			System.out.println(digit + "*" + multiply + "=" + digitWithMultiply + "=" + crossSum);
+			System.out.println(digit + " * " + multiply + " = " + digitWithMultiply + " = " + crossSum + " (crosssum)");
 			
 		}
 		System.out.println("Total: " + total);
