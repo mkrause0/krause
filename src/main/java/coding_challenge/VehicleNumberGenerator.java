@@ -30,9 +30,9 @@ public class VehicleNumberGenerator {
 		return appendCheckDigitToNumber(number);
 	}
 
-	// TODO parameterize Bauartcode, Reihennummer and Ordnungsnummer
+	// TODO parameterize Bauartcode, Reihennummer
 	/**
-	 * generates an 11 digit long vehicle number with Bauartcode 91, Reihennummer 1001 and an random Ordnungsnummer
+	 * generates an 11 digit long vehicle number with Bauartcode 91, Ländercode 81, Reihennummer 1001 and an random Ordnungsnummer
 	 */
 	public String generateVehicleNumber11()
 	{
@@ -74,21 +74,19 @@ public class VehicleNumberGenerator {
 		System.out.println("Total: " + total);
 		int nextNumberOfTen = getNextNumberOfTen(total);
 		int diffToNext10 = nextNumberOfTen-total;
-		if(diffToNext10 == 10)
-		{
-			//TODO was soll dann gemacht werden, die Prüfziffer auf 0 gesetz werden?
-		}
 		System.out.println("diffToNext10 ("+nextNumberOfTen+"-"+total+"): " + diffToNext10);
 		return number + "" + diffToNext10;
 	}
 	
 	/**
 	 * determines the next larger number of 10
-	 * TODO: Differenz zum nächsten Vielfachen von 10: (10−9) =  1
-	 * 		 Bei einer Zahl 20 wäre das nächste vielfache 30. Und das Ergebniss dann zweistellig: (30-20) = 10.
-	 *       Das Vorgehen wird aus dem Artikel in diesem Fall nicht ersichtbar.
+	 * diff to the next larger number of 10: (10−9) =  1
+	 * special case if n is already an next of 10: (30-30) = 0
 	 */
     public static int getNextNumberOfTen(int n) {
+    	if (n != 0 && n % 10 == 0)
+    		return n;
+    	
         return ((n / 10) + 1) * 10;
     }
     

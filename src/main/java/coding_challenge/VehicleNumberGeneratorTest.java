@@ -13,7 +13,7 @@ public class VehicleNumberGeneratorTest {
 		assertEquals(VehicleNumberGenerator.getNextNumberOfTen(9), 10);
 		assertEquals(VehicleNumberGenerator.getNextNumberOfTen(17), 20);
 		assertEquals(VehicleNumberGenerator.getNextNumberOfTen(36), 40);
-		assertEquals(VehicleNumberGenerator.getNextNumberOfTen(40), 50); // TODO Ist die nächste vielfache in diesem Fall 50?
+		assertEquals(VehicleNumberGenerator.getNextNumberOfTen(20), 20);
 	}
 	
 	@Test
@@ -31,7 +31,7 @@ public class VehicleNumberGeneratorTest {
 		assertEquals(gen.appendCheckDigitToNumber("1116064"), "11160645");
 		assertEquals(gen.appendCheckDigitToNumber("1142606"), "11426061");
 		assertEquals(gen.appendCheckDigitToNumber("91811216141"), "918112161412");
-		assertEquals(gen.appendCheckDigitToNumber("91811001250"), "9181100125010"); //TODO was wenn prüffziffer 2 stellig ist?
+		assertEquals(gen.appendCheckDigitToNumber("91811001250"), "918110012500"); // special case if n is already an next of 10: (30-30) = 0
 	}
 	
 	@Test
