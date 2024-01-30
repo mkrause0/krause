@@ -1,8 +1,6 @@
 package coding_challenge;
 
-import java.util.ArrayList;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,6 +10,8 @@ import org.springframework.stereotype.Component;
 public class VehicleNumberGenerator {
 	
 	private static final Logger LOGGER = LogManager.getLogger(VehicleNumberGenerator.class);
+	
+	Random r = new Random();
 
 	// TODO parameterize Reihennummer  
 	/**
@@ -19,19 +19,15 @@ public class VehicleNumberGenerator {
 	 */
 	public String generateVehicleNumber7()
 	{
-		Random r = new Random();
-		ArrayList<Integer> numbers = new ArrayList<Integer>();
-		numbers.add(1); // Reihennummer (Elektrolokomotive = 1; 1001–1019: Schnellzuglokomotiven)
-		numbers.add(0); // Reihennummer 
-		numbers.add(0); // Reihennummer
-		numbers.add(1); // Reihennummer
-		numbers.add(r.nextInt(10)); // Ordnungsnummer
-		numbers.add(r.nextInt(10)); // Ordnungsnummer
-		numbers.add(r.nextInt(10)); // Ordnungsnummer
-		String number = numbers.stream()
-	               .map(Object::toString)
-	               .collect(Collectors.joining());
-		return appendCheckDigitToNumber(number);
+		StringBuilder numbers = new StringBuilder();
+		numbers.append(1); // Reihennummer (Elektrolokomotive = 1; 1001–1019: Schnellzuglokomotiven)
+		numbers.append(0); // Reihennummer 
+		numbers.append(0); // Reihennummer
+		numbers.append(1); // Reihennummer
+		numbers.append(r.nextInt(10)); // Ordnungsnummer
+		numbers.append(r.nextInt(10)); // Ordnungsnummer
+		numbers.append(r.nextInt(10)); // Ordnungsnummer
+		return appendCheckDigitToNumber(numbers.toString());
 	}
 
 	// TODO parameterize Bauartcode, Reihennummer
@@ -40,23 +36,19 @@ public class VehicleNumberGenerator {
 	 */
 	public String generateVehicleNumber11()
 	{
-		Random r = new Random();
-		ArrayList<Integer> numbers = new ArrayList<Integer>();
-		numbers.add(9); // Bauartcode (Triebfahrzeug = 9)
-		numbers.add(1); // Bauartcode
-		numbers.add(8); // Ländercode
-		numbers.add(1); // Ländercode
-		numbers.add(1); // Reihennummer (Elektrolokomotive = 1; 1001–1019: Schnellzuglokomotiven)
-		numbers.add(0); // Reihennummer
-		numbers.add(0); // Reihennummer
-		numbers.add(1); // Reihennummer
-		numbers.add(r.nextInt(10)); // Ordnungsnummer
-		numbers.add(r.nextInt(10)); // Ordnungsnummer
-		numbers.add(r.nextInt(10)); // Ordnungsnummer
-		String number = numbers.stream()
-	               .map(Object::toString)
-	               .collect(Collectors.joining());
-		return appendCheckDigitToNumber(number);
+		StringBuilder numbers = new StringBuilder();
+		numbers.append(9); // Bauartcode (Triebfahrzeug = 9)
+		numbers.append(1); // Bauartcode
+		numbers.append(8); // Ländercode
+		numbers.append(1); // Ländercode
+		numbers.append(1); // Reihennummer (Elektrolokomotive = 1; 1001–1019: Schnellzuglokomotiven)
+		numbers.append(0); // Reihennummer
+		numbers.append(0); // Reihennummer
+		numbers.append(1); // Reihennummer
+		numbers.append(r.nextInt(10)); // Ordnungsnummer
+		numbers.append(r.nextInt(10)); // Ordnungsnummer
+		numbers.append(r.nextInt(10)); // Ordnungsnummer
+		return appendCheckDigitToNumber(numbers.toString());
 	}
 
 	/**
